@@ -14,7 +14,7 @@ function collect_data(){
 }  
 
 echo "<div class='text-center'>";
-$name=$_POST['name'];  
+$username=$_POST['username'];  
 $password=$_POST['password'];  
 if($name == "")  
 {   
@@ -30,7 +30,7 @@ elseif($password == "")
 else  
 {   
     $colum=collect_data();  
-     if(($colum['name'] == $name) && ($colum['password'] == $password))  
+     if(($colum['username'] == $username) && ($colum['password'] == $password))  
         {  
          //echo "验证成功！<br>";  
             echo"<script type='text/javascript'>alert('登陆成功');</script>";  
