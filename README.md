@@ -37,7 +37,7 @@
  - [SQl-8](#sql-8)
 
 
-##<span id="SQL-2">SQL-2</span>
+##<span id="SQL-1">SQL-1</span>
 ###mysql_query
  - `SELECT * FROM users WHERE id=1 LIMIT 0,1;`
 ###Payload
@@ -146,3 +146,8 @@ SQL-6对比与SQL-1多了一层粗糙的过滤，`function sqlentities()`以黑�
     - `id=-3563 UNandION ALL SELECandT NULL,NULL,CONCAT()--`
 
 ####<span id="SQL-8">SQL-8</span>
+###mysql_query
+ - ```
+   $name=$_POST['username'];  
+   $password=$_POST['password']; 
+   ```
