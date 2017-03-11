@@ -83,11 +83,11 @@
 ###Payload
  - error-based blind
     - `?id=1 AND (SELECT 1 FROM (SELECT COUNT(*),CONCAT(user(),FLOOR(RAND(0)*2))x FROM information_schema.tables GROUP BY x)a)`
-        - floor(rand(0)*2)、count(*)、group by，报错方式的原理是：使用rand()查询时，由于group by的存在floor(rand(0)*2)会被执行一次，当x虚拟表不存在时，插入虚拟表会被再执行一次，而报错正是因为floor(rand(0)*2)的确定性011；文章：Wooyun知识库-Mysql报错注入原理分析(count()、rand()、group by)
+        - 主键重复性报错，floor(rand(0)*2)、count(*)、group by，报错方式的原理是：使用rand()查询时，由于group by的存在floor(rand(0)*2)会被执行一次，当x虚拟表不存在时，插入虚拟表会被再执行一次，而报错正是因为floor(rand(0)*2)的确定性011；文章：Wooyun知识库-Mysql报错注入原理分析(count()、rand()、group by)
     - `id=1  and (extractvalue(1,concat(0x7e,(select user()),0x7e)))`
         - extractvalue是mysql5.1提供的内置XML文件解析和修改函数，函数语法为extratvalue(XML_document,XPath_string),其中的XML_document是string格式，而当我们传入一个数值时，extractvalue()函数会产生报错；
     - `id=1  and (updatexml(1,concat(0x7e,(select user()),0x7e),1))`
-        - updatexml同样是mysql5.1中提供的内置xml文件解析和修改函数，函数语法为updatexml(XML_document,XPath_string,new_value),其中的XML_document是string格式，而当我们传入一个数值时，updatexml()函数会产生报错；  
+        - extractvalue、updatexml都属于xpath语法错误进行报错注入，version>5.1.5,提供的两个XML查询和修改哈苏宁沪，extractvalue负责在xml文档中按照xpath语法查询节点内容，而updatexml负责修改查询到的内容。extractvalue、updatexml函数的第二个参数都是要去符合xpath语法的字符串，如果我们传入数字就能产生报错。updatexml同样是mysql5.1中提供的内置xml文件解析和修改函数，函数语法为updatexml(XML_document,XPath_string,new_value),其中的XML_document是string格式，而当我们传入一个数值时，updatexml()函数会产生报错；  
 
 
 ##<span id="SQL-5">SQL-5</span>
